@@ -34,16 +34,20 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
         // Lookup view for data population
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+        TextView tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
         ImageView ivPoster = (ImageView) convertView.findViewById(R.id.ivPoster);
 
         // Populate the data into the template view using the data object
-        tvTitle.setText(movie.title);
+        tvTitle.setText(movie.getTitle());
+        tvOverview.setText(movie.getOverview());
 
         Log.d("MoviesAdapter", "Position: " + position);
 
-        String imageUri = "https://i.imgur.com/tGbaZCY.jpg";
+        String imageUri = movie.getPosterUrl();
         Picasso.with(getContext()).load(imageUri).into(ivPoster);
-
+        // rounded corners
+        //Picasso.with(getContext()).load(imageUri)
+        //        .transform(new RoundedCornersTransformation(100, 100)).into((ImageView) convertView.findViewById(R.id.ivPoster));
 
 
         // Return the completed view to render on screen

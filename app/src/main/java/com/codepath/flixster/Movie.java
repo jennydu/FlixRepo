@@ -1,31 +1,56 @@
 package com.codepath.flixster;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
  * Created by jenniferdu on 6/15/16.
  */
 public class Movie {
+
+
     public String title;
     public String posterUrl;
-    public int rating;
+    public String rating;
+    public String overview;
 
-    public Movie(String title, String posterUrl, int rating) { // ctrl-N to autocreate
-        this.title = title;
-        this.posterUrl = posterUrl;
-        this.rating = rating;
+    public Movie(JSONObject jsonObject)throws JSONException { // ctrl-N to autocreate
+        this.title = jsonObject.getString("original_title");
+        this.posterUrl = jsonObject.getString("poster_path");
+        this.rating = jsonObject.getString("vote_average");
+        this.overview = jsonObject.getString("overview");
     }
 
-    public static ArrayList<Movie> getFakeMovies(){
-        ArrayList<Movie> movies = new ArrayList<>();
+    public String getTitle() {
+        return title;
+    }
 
-        for (int i = 0; i < 60; i++) {
-            movies.add(new Movie("The Social Network", "", 75));
-            movies.add(new Movie("The Internship", "", 50));
-            movies.add(new Movie("The Lion King", "", 100));
+    public String getPosterUrl() {
+        return String.format("https://image.tmdb.org/t/p/w342/%s", posterUrl);
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public static ArrayList<Movie> fromJSONArray(JSONArray array){
+        ArrayList<Movie> results = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++){
+            try {
+                results.add(new Movie(array.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-
-        return movies;
+        return results;
     }
 
     public String toString(){
